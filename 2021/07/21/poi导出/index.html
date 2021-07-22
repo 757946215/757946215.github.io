@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Java＋poi 实现导出excel文档 - Core</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="在工作当中，不乏遇到一些数据需要我们一键导出生成excel文档。记录一下Java使用poi依赖实现导出excel文档的步骤以及实现方式！
+1、导入此功能所需要的maven依赖&amp;lt;dependen,"> 
+    <meta name="author" content="John Doe"> 
+    <link rel="alternative" href="atom.xml" title="Core" type="application/atom+xml"> 
+    <link rel="icon" href="/img/Toplogo.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Core</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">Java＋poi 实现导出excel文档</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Java＋poi 实现导出excel文档</h1>
+        <div class="stuff">
+            <span>七月 21, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/java/" rel="tag">java</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/poi/" rel="tag">poi</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在工作当中，不乏遇到一些数据需要我们一键导出生成excel文档。记录一下Java使用poi依赖实现导出excel文档的步骤以及实现方式！</p>
+<h2 id="1、导入此功能所需要的maven依赖"><a href="#1、导入此功能所需要的maven依赖" class="headerlink" title="1、导入此功能所需要的maven依赖"></a>1、导入此功能所需要的maven依赖</h2><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+    <span class="token operator">&lt;</span>groupId<span class="token operator">></span>commons<span class="token operator">-</span>lang<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>commons<span class="token operator">-</span>lang<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>version<span class="token operator">></span><span class="token number">2.3</span><span class="token operator">&lt;</span><span class="token operator">/</span>version<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+<span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+    <span class="token operator">&lt;</span>groupId<span class="token operator">></span>org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>poi<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>poi<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>version<span class="token operator">></span><span class="token number">3.9</span><span class="token operator">&lt;</span><span class="token operator">/</span>version<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>mvnrepository<span class="token punctuation">.</span>com<span class="token operator">/</span>artifact<span class="token operator">/</span>org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>poi<span class="token operator">/</span>poi<span class="token operator">-</span>ooxml <span class="token operator">--</span><span class="token operator">></span>
+<span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+    <span class="token operator">&lt;</span>groupId<span class="token operator">></span>org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>poi<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>poi<span class="token operator">-</span>ooxml<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>version<span class="token operator">></span><span class="token number">3.9</span><span class="token operator">&lt;</span><span class="token operator">/</span>version<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2、编写一个注解类，配合实体类属性使用用来对应excel的表头以及字段名称"><a href="#2、编写一个注解类，配合实体类属性使用用来对应excel的表头以及字段名称" class="headerlink" title="2、编写一个注解类，配合实体类属性使用用来对应excel的表头以及字段名称"></a>2、编写一个注解类，配合实体类属性使用用来对应excel的表头以及字段名称</h2><p>注解类</p>
+<pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">
+import java.lang.annotation.*;
+
+
+&#x2F;**
+ * &lt;p&gt;
+ *  功能：excel模板设置
+ * &lt;&#x2F;p&gt;
+ * @author ASUS
+ *&#x2F;
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface ExcelAnnotation &#123;
+
+    &#x2F;&#x2F;Excel列ID(Excel列排序序号)
+    int id();
+    &#x2F;&#x2F;Excel列名
+    String[] name();
+    &#x2F;&#x2F;Excel列宽
+    int width() default 5000;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>实体类</p>
+<pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">
+public class ZcStoreStockForzk &#123;
+
+    &#x2F;**
+    *@param id 用来决定表头的顺序
+    *@param name 用来决定表头的名称
+    *@param width 用来决定表头的宽度
+    *&#x2F;
+
+	&#x2F;**备件编码*&#x2F;
+	@ExcelAnnotation(id &#x3D; 1 ,name &#x3D; &quot;备件编码&quot;, width &#x3D; 5000)
+	private java.lang.String spareCode;
+	&#x2F;**备件名称*&#x2F;
+	@ExcelAnnotation(id &#x3D; 2 ,name &#x3D; &quot;备件名称&quot;, width &#x3D; 5000)
+	private java.lang.String spareName;
+	&#x2F;**备件类别*&#x2F;
+	@ExcelAnnotation(id &#x3D; 3 ,name &#x3D; &quot;备件类别&quot;, width &#x3D; 5000)
+	private java.lang.String spareCategory;
+	
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="3、将编写好的excel工具类拿过去用"><a href="#3、将编写好的excel工具类拿过去用" class="headerlink" title="3、将编写好的excel工具类拿过去用"></a>3、将编写好的excel工具类拿过去用</h2><pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">
+import com.ecidi.modules.zkzc.store.zcstorestock.annotations.ExcelAnnotation;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+
+&#x2F;**
+ * excel工具类
+ * @author wangkecheng
+ * @param &lt;T&gt;
+ *&#x2F;
+public class ExcelUtil&lt;T&gt; &#123;
+
+    public static final int EXPORT_07_LEAST_SIZE &#x3D; 50000;
+    &#x2F;**
+     * 功能 :获取表单导出数据
+     * 开发：wangkecheng
+     * @param list        数据列表
+     * @param title     首行标题
+     * @param className 实体对象class
+     * @param exportType         模板标号
+     * @return
+     * @throws Exception
+     *&#x2F;
+    public HSSFWorkbook exportExcel(List&lt;T&gt; list, String title, Class className, Integer exportType) throws Exception &#123;
+        &#x2F;&#x2F; 获取属性
+        Field[] fields &#x3D; className.getDeclaredFields();
+        List&lt;Field&gt; fieldList &#x3D; new ArrayList&lt;Field&gt;();
+        for (Field fie : fields) &#123;
+            if (fie.isAnnotationPresent(ExcelAnnotation.class)) &#123;
+                fieldList.add(fie);
+            &#125;
+        &#125;
+        &#x2F;&#x2F; 按照id进行排序
+        Collections.sort(fieldList, new Comparator&lt;Field&gt;() &#123;
+            public int compare(Field f1, Field f2) &#123;
+                return f1.getAnnotation(ExcelAnnotation.class).id() - f2.getAnnotation(ExcelAnnotation.class).id();
+            &#125;
+        &#125;);
+        int columnsize &#x3D; fieldList.size(), rowindex &#x3D; 0;
+        &#x2F;&#x2F; 创建一个HSSFWorbook对象（excel的文档对象）
+        HSSFWorkbook hWorkbook &#x3D; new HSSFWorkbook();
+        &#x2F;&#x2F; 创建一个HSSFSheet对象（excll的表单）
+        HSSFSheet hSheet &#x3D; hWorkbook.createSheet();
+        &#x2F;&#x2F; 创建行（excel的行）
+        HSSFRow hRow &#x3D; hSheet.createRow(rowindex++);
+        &#x2F;&#x2F;设置行高度
+        hRow.setHeight((short)380);
+        &#x2F;&#x2F; 创建单元格（从0开始）
+        HSSFCell hCell &#x3D; hRow.createCell((short) 0);
+        &#x2F;&#x2F;样式对象
+        HSSFCellStyle cellStyle &#x3D; getCellStyle(hWorkbook, (short) 300, (short) 500);
+        &#x2F;&#x2F; 将上面获得的样式对象给对应单元格
+        hCell.setCellStyle(cellStyle);
+        &#x2F;&#x2F;设置标题行
+        hCell.setCellValue(title);
+
+        if (getHuoResult(fieldList.isEmpty(),list &#x3D;&#x3D; null,list.isEmpty())) &#123;
+            return hWorkbook;
+        &#125;
+
+        &#x2F;&#x2F;创建第二行，代表列名
+        hRow &#x3D; hSheet.createRow(rowindex++);
+        cellStyle &#x3D; getCellStyle(hWorkbook, (short) 270, (short) 500);
+        generateTitle(exportType, fieldList, columnsize, hSheet, hRow, cellStyle);
+
+        &#x2F;&#x2F;组装excel的数据
+        cellStyle &#x3D; getCellStyle(hWorkbook, (short) 220, (short) 500);&#x2F;&#x2F; 设置单元格格式
+        generateData(list, fieldList, columnsize, rowindex, hSheet, cellStyle);
+
+        &#x2F;**
+         * 第1个参数：从哪一行开始
+         * 第2个参数：到哪一行结束
+         * 第3个参数：从哪一列开始
+         * 第4个参数：到哪一列结束
+         *&#x2F;
+        hSheet.addMergedRegion(new CellRangeAddress(0,0,0,columnsize-1));
+
+        &#x2F;&#x2F; 固定表头（前一个参数代表列，后一个参数单表行）
+        hSheet.createFreezePane(0, 1);
+        return hWorkbook;
+    &#125;
+
+    &#x2F;**
+     * 功能：組裝列明
+     * @param exportType 模板编号
+     * @param fieldList 列名
+     * @param columnsize 列数
+     * @param hSheet sheet页
+     * @param hRow  行
+     * @param cellStyle 样式
+     *&#x2F;
+    private void generateTitle(Integer exportType, List&lt;Field&gt; fieldList, int columnsize, HSSFSheet hSheet, HSSFRow hRow,
+                               HSSFCellStyle cellStyle) &#123;
+        HSSFCell hCell;
+        for (int i &#x3D; 0; i &lt; columnsize; i++) &#123;
+            Field field &#x3D; fieldList.get(i);
+            if (field.isAnnotationPresent(ExcelAnnotation.class)) &#123;
+                &#x2F;&#x2F; 获取该字段的注解对象
+                ExcelAnnotation anno &#x3D; field.getAnnotation(ExcelAnnotation.class);
+                hCell &#x3D; hRow.createCell((short) i);
+                String colName &#x3D; field.getAnnotation(ExcelAnnotation.class).name().length&gt;exportType
+                        ?field.getAnnotation(ExcelAnnotation.class).name()[exportType]
+                        :field.getAnnotation(ExcelAnnotation.class).name()[0];
+                hCell.setCellValue(colName);
+                hCell.setCellStyle(cellStyle);
+                hSheet.setColumnWidth((short) i, (short) anno.width());
+            &#125;
+        &#125;
+    &#125;
+
+    &#x2F;**
+     * 组装excel的数据
+     * @param list 具体数据
+     * @param fieldList 列名
+     * @param columnsize 列数
+     * @param rowindex 行数计数
+     * @param hSheet sheet页
+     * @param cellStyle 样式
+     * @return
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     *&#x2F;
+    private int generateData(List&lt;T&gt; list, List&lt;Field&gt; fieldList, int columnsize, int rowindex, HSSFSheet hSheet,
+                             HSSFCellStyle cellStyle) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException &#123;
+        HSSFRow hRow;
+        HSSFCell hCell;
+        for (Object model : list) &#123;
+            hRow &#x3D; hSheet.createRow(rowindex++);
+            &#x2F;&#x2F;获取该类
+            Class clazz &#x3D; model.getClass();
+            for (int i &#x3D; 0; i &lt; columnsize; i++) &#123;
+                Field field &#x3D;fieldList.get(i);
+                &#x2F;&#x2F;获取方法名
+                String methodName &#x3D; &quot;get&quot; + field.getName().substring(0, 1).toUpperCase()+field.getName().substring(1);
+                Method method &#x3D; clazz.getMethod(methodName);
+                try &#123;
+                    &#x2F;&#x2F; 获取该字段的注解对象
+                    Object result &#x3D; method.invoke(model);
+                    hCell &#x3D; hRow.createCell((short) i);
+                    if (result !&#x3D; null) &#123;
+                        if (result.getClass().isAssignableFrom(Date.class)) &#123;
+                            SimpleDateFormat format &#x3D; new SimpleDateFormat(&quot;yyyy年MM月dd日&quot;);
+                            result &#x3D; format.format(result);
+                        &#125;
+                        hCell.setCellValue(new HSSFRichTextString(result.toString()));
+                    &#125; else &#123;
+                        hCell.setCellValue(new HSSFRichTextString(&quot;-&quot;));
+                    &#125;
+                    hCell.setCellStyle(cellStyle);
+                &#125; catch (IllegalArgumentException e) &#123;
+                    System.out.println(e.getMessage());
+                &#125;
+            &#125;
+        &#125;
+        return rowindex;
+    &#125;
+    &#x2F;**
+     * 生成07格式的excel对象 使用流方式防止内存溢出
+     * @param list
+     * @param title
+     * @param className
+     * @param exportType
+     * @return
+     * @throws Exception
+     *&#x2F;
+    public SXSSFWorkbook exportExcel07S(List&lt;T&gt; list, String title, Class className, Integer exportType) throws Exception &#123;
+        &#x2F;&#x2F; 获取属性
+        Field[] fields &#x3D; className.getDeclaredFields();
+        List&lt;Field&gt; fieldList &#x3D; new ArrayList&lt;Field&gt;();
+        for (Field fie : fields) &#123;
+            if (fie.isAnnotationPresent(ExcelAnnotation.class))&#123;
+                fieldList.add(fie);
+            &#125;
+        &#125;
+        &#x2F;&#x2F; 按照id进行排序
+        Collections.sort(fieldList, new Comparator&lt;Field&gt;() &#123;
+            public int compare(Field f1, Field f2) &#123;
+                return f1.getAnnotation(ExcelAnnotation.class).id() - f2.getAnnotation(ExcelAnnotation.class).id();
+            &#125;
+        &#125;);
+
+        int columnsize &#x3D; fieldList.size(), rowindex &#x3D; 0;
+        &#x2F;&#x2F; 创建一个HSSFWorbook对象s
+        SXSSFWorkbook hWorkbook &#x3D; new SXSSFWorkbook();
+        &#x2F;&#x2F; 创建一个HSSFSheet对象（sheet页）
+        Sheet hSheet &#x3D;  hWorkbook.createSheet();
+        &#x2F;&#x2F; 创建第一行(此行作为头)
+        Row hRow &#x3D; hSheet.createRow(rowindex++);
+        hRow.setHeight((short)380);
+        &#x2F;&#x2F; 创建单元格（第一（0）个）
+        Cell hCell &#x3D; hRow.createCell((short) 0);
+        &#x2F;&#x2F; 设置样式
+        CellStyle cellStyle &#x3D; getCellStyle07S(hWorkbook, (short) 300, (short) 500);
+        &#x2F;&#x2F; 将上面获得的样式对象给对应单元格
+        hCell.setCellStyle(cellStyle);
+        &#x2F;&#x2F;设置标题行
+        hCell.setCellValue(title);
+
+        if (getHuoResult(fieldList.isEmpty(),list &#x3D;&#x3D; null,list.isEmpty())) &#123;
+            return hWorkbook;
+        &#125;
+
+        &#x2F;&#x2F; 创建第二列，列名
+        hRow &#x3D; hSheet.createRow(rowindex++);
+        cellStyle &#x3D; getCellStyle07S(hWorkbook, (short) 270, (short) 500);
+        createTitle07S(exportType, fieldList, columnsize, hSheet, hRow, cellStyle);
+
+        &#x2F;&#x2F;生成数据
+        cellStyle &#x3D; getCellStyle07S(hWorkbook, (short) 220, (short) 500);&#x2F;&#x2F; 设置单元格格式
+        dealCreateRow07S(list, fieldList, columnsize, rowindex, hSheet, cellStyle);
+
+        &#x2F;**
+         * 第1个参数：从哪一行开始
+         * 第2个参数：到哪一行结束
+         * 第3个参数：从哪一列开始
+         * 第4个参数：到哪一列结束
+         *&#x2F;
+        hSheet.addMergedRegion(new CellRangeAddress(0,0,0,columnsize-1));
+
+        &#x2F;&#x2F; 固定表头（前一个参数代表列，后一个参数单表行）
+        hSheet.createFreezePane(0, 1);
+        return hWorkbook;
+    &#125;
+
+    private int dealCreateRow07S(List&lt;T&gt; list, List&lt;Field&gt; fieldList, int columnsize, int rowindex, Sheet hSheet,
+                                 CellStyle cellStyle) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException &#123;
+        Row hRow;
+        Cell hCell;
+        for (Object model : list) &#123;
+            hRow &#x3D; hSheet.createRow(rowindex++);
+            &#x2F;&#x2F; 获取该类 并获取自身方法
+            Class clazz &#x3D; model.getClass();
+            for (int i &#x3D; 0; i &lt; columnsize; i++) &#123;
+                Field field &#x3D; fieldList.get(i);
+                String methodName &#x3D; &quot;get&quot; + field.getName().substring(0, 1).toUpperCase()
+                        + field.getName().substring(1);
+                Method method &#x3D; clazz.getMethod(methodName);
+                try &#123;
+                    &#x2F;&#x2F; 获取该字段的注解对象
+                    Object result &#x3D; method.invoke(model);
+                    hCell &#x3D; hRow.createCell((short) i);
+                    if (result !&#x3D; null) &#123;
+                        if (result.getClass().isAssignableFrom(Date.class)) &#123;
+                            SimpleDateFormat format &#x3D; new SimpleDateFormat(&quot;yyyy年MM月dd日&quot;);
+                            result &#x3D; format.format(result);
+                        &#125;
+                        hCell.setCellValue(new XSSFRichTextString(result.toString()));
+                    &#125; else &#123;
+                        hCell.setCellValue(new XSSFRichTextString(&quot;-&quot;));
+                    &#125;
+                    hCell.setCellStyle(cellStyle);
+                &#125; catch (IllegalArgumentException e) &#123;
+                    System.out.println(e.getMessage());
+                &#125;
+            &#125;
+        &#125;
+        return rowindex;
+    &#125;
+
+    &#x2F;**
+     * 生成列名
+     * @param exportType 模板编号
+     * @param fieldList 列名
+     * @param columnsize 列数
+     * @param hSheet
+     * @param hRow
+     * @param cellStyle
+     *&#x2F;
+    private void createTitle07S(Integer exportType, List&lt;Field&gt; fieldList, int columnsize, Sheet hSheet, Row hRow,
+                                CellStyle cellStyle) &#123;
+        Cell hCell;
+        for (int i &#x3D; 0; i &lt; columnsize; i++) &#123;
+            Field field &#x3D; (Field) fieldList.get(i);
+            if (field.isAnnotationPresent(ExcelAnnotation.class)) &#123;
+                &#x2F;&#x2F; 获取该字段的注解对象
+                ExcelAnnotation anno &#x3D; field.getAnnotation(ExcelAnnotation.class);
+                hCell &#x3D; hRow.createCell((short) i);
+                String colName &#x3D; field.getAnnotation(ExcelAnnotation.class).name().length&gt;exportType
+                        ?field.getAnnotation(ExcelAnnotation.class).name()[exportType]
+                        :field.getAnnotation(ExcelAnnotation.class).name()[0];
+                hCell.setCellValue(colName);
+                hCell.setCellStyle(cellStyle);
+                hSheet.setColumnWidth((short) i, (short) anno.width());
+            &#125;
+        &#125;
+    &#125;
+
+    &#x2F;**
+     * 功能 :设置excel表格默认样式
+     * @param hWorkbook     需导出Excel数据
+     * @param fontHeight     字体粗度
+     * @param boldWeight    表格线的粗度
+     * @return
+     *&#x2F;
+    public HSSFCellStyle getCellStyle(HSSFWorkbook hWorkbook, short fontHeight, short boldWeight) &#123;
+        HSSFCellStyle cellStyle;
+        HSSFFont font;
+        cellStyle &#x3D; hWorkbook.createCellStyle();
+        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+        font &#x3D; hWorkbook.createFont();
+        font.setFontHeight(fontHeight);
+        font.setBoldweight(boldWeight);
+        font.setFontName(&quot;宋体&quot;);
+        cellStyle.setFont(font);
+        cellStyle.setWrapText(true);
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        return cellStyle;
+    &#125;
+
+    &#x2F;**
+     * 功能 :设置excel 07表格默认样式
+     * @param hWorkbook     需导出Excel数据
+     * @param fontHeight     字体粗度
+     * @param boldWeight    表格线的粗度
+     * @return
+     *&#x2F;
+    public CellStyle getCellStyle07S(SXSSFWorkbook hWorkbook, short fontHeight, short boldWeight) &#123;
+        CellStyle cellStyle;
+        Font font;
+        cellStyle &#x3D; hWorkbook.createCellStyle();
+        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
+        cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+        font &#x3D; hWorkbook.createFont();
+        font.setFontHeight(fontHeight);
+        font.setBoldweight(boldWeight);
+        font.setFontName(&quot;宋体&quot;);
+        cellStyle.setFont(font);
+        cellStyle.setWrapText(true);
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        return cellStyle;
+    &#125;
+
+    &#x2F;*
+     * 获取或运算结果
+     *&#x2F;
+    private static boolean getHuoResult(Boolean... bs)&#123;
+        for(boolean b:bs)&#123;
+            if(b)&#123;
+                return b;
+            &#125;
+        &#125;
+        return false;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="4、在编写一个逻辑以及下载方式的方法放到另一个Java文件（复制即可）"><a href="#4、在编写一个逻辑以及下载方式的方法放到另一个Java文件（复制即可）" class="headerlink" title="4、在编写一个逻辑以及下载方式的方法放到另一个Java文件（复制即可）"></a>4、在编写一个逻辑以及下载方式的方法放到另一个Java文件（复制即可）</h2><pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.List;
+
+&#x2F;**
+ *功能描述：导出报表
+ *&#x2F;
+public class ReportExcel &#123;
+    &#x2F;**
+     * 功能: Excel导出公共方法
+     * 记录条数大于50000时 导出.xlsx文件(excel07+)  小于等于50000时导出 .xls文件(excel97-03)
+     * 开发：wangkecheng
+     * @param list            需要导出的列表数据
+     * @param title            导出文件的标题
+     * @param className        导出对象的类名
+     * @param exportType    针对同一个pojo可能有多个不同的导出模板时,可以通过此属性来决定导出哪一套模板，默认第一套
+     * @param response         用来获取输出流
+     * @param request       针对火狐浏览器导出时文件名乱码的问题,也可以不传入此值
+     * @throws IOException
+     *&#x2F;
+    public void excelExport(List list, String title, Class className, Integer exportType, HttpServletResponse response, HttpServletRequest request) throws IOException &#123;
+        OutputStream out &#x3D; response.getOutputStream();
+        try &#123;
+            ExcelUtil excel &#x3D; new ExcelUtil();
+            if(list!&#x3D;null &amp;&amp; list.size()&gt;ExcelUtil.EXPORT_07_LEAST_SIZE)&#123;
+                dealBigNumber(list, title, className, exportType, response, request, out, excel);
+            &#125;else&#123;
+                HSSFWorkbook hss &#x3D; new HSSFWorkbook();
+                if(exportType&#x3D;&#x3D;null)&#123;
+                    hss &#x3D; excel.exportExcel(list,title,className,0);
+                &#125;else&#123;
+                    hss &#x3D; excel.exportExcel(list, title, className, exportType);
+                &#125;
+                String disposition &#x3D; &quot;attachment;filename&#x3D;&quot;;
+                if(request!&#x3D;null&amp;&amp;request.getHeader(&quot;USER-AGENT&quot;)!&#x3D;null&amp;&amp; StringUtils.contains(request.getHeader(&quot;USER-AGENT&quot;), &quot;Firefox&quot;))&#123;
+                    disposition +&#x3D; new String((title+&quot;.xls&quot;).getBytes(),&quot;ISO8859-1&quot;);
+                &#125;else&#123;
+                    disposition +&#x3D; URLEncoder.encode(title+&quot;.xls&quot;, &quot;UTF-8&quot;);
+                &#125;
+
+                System.out.println(disposition);
+                response.setContentType(&quot;application&#x2F;vnd.ms-excel;charset&#x3D;UTF-8&quot;);
+                response.setHeader(&quot;Content-disposition&quot;, disposition);
+                hss.write(out);
+            &#125;
+        &#125; catch (Exception e) &#123;
+            System.out.println(e.getMessage());
+        &#125; finally &#123;
+            out.close();
+        &#125;
+    &#125;
+
+    private void dealBigNumber(List list, String title, Class className, Integer exportType,
+                               HttpServletResponse response, HttpServletRequest request, OutputStream out, ExcelUtil excel)
+            throws Exception&#123;
+        SXSSFWorkbook hss;
+        if(exportType&#x3D;&#x3D;null)&#123;
+            hss &#x3D; excel.exportExcel07S(list,title,className,0);
+        &#125;else&#123;
+            hss &#x3D; excel.exportExcel07S(list, title, className, exportType);
+        &#125;
+
+        String disposition &#x3D; &quot;attachment;filename&#x3D;&quot;;
+        if(request!&#x3D;null &amp;&amp; request.getHeader(&quot;USER-AGENT&quot;) !&#x3D; null &amp;&amp; StringUtils.contains(request.getHeader(&quot;USER-AGENT&quot;), &quot;Firefox&quot;))&#123;
+            disposition +&#x3D; new String((title+&quot;.xlsx&quot;).getBytes(),&quot;ISO8859-1&quot;);
+        &#125;else&#123;
+            disposition +&#x3D; URLEncoder.encode(title+&quot;.xlsx&quot;, &quot;UTF-8&quot;);
+        &#125;
+
+        response.setContentType(&quot;application&#x2F;vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset&#x3D;UTF-8&quot;);
+        response.setHeader(&quot;Content-disposition&quot;, disposition);
+        hss.write(out);
+    &#125;
+
+&#125;
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5、直接调用第三步当中的excelExport接口即可，示例如下："><a href="#5、直接调用第三步当中的excelExport接口即可，示例如下：" class="headerlink" title="5、直接调用第三步当中的excelExport接口即可，示例如下："></a>5、直接调用第三步当中的excelExport接口即可，示例如下：</h3><p>list: 你所要导出的数据<br>库存信息导出数据：你所导出的文件名<br>ZcStoreStockForzk.class：你的实体类 class必须是编译后的实体类（此处直接改实体类的名称即可）<br>1：默认模板类型</p>
+<p>/**<br>     * 功能: Excel导出公共方法<br>     * 记录条数大于50000时 导出.xlsx文件(excel07+)  小于等于50000时导出 .xls文件(excel97-03)<br>     * 开发：wangkecheng<br>     * @param list            需要导出的列表数据<br>     * @param title            导出文件的标题<br>     * @param className        导出对象的类名<br>     * @param exportType    针对同一个pojo可能有多个不同的导出模板时,可以通过此属性来决定导出哪一套模板，默认第一套<br>     * @param response         用来获取输出流<br>     * @param request       针对火狐浏览器导出时文件名乱码的问题,也可以不传入此值<br>     * @throws IOException<br>     */</p>
+<pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">reportExcel.excelExport(list,&quot;库存信息导出数据&quot;,ZcStoreStockForzk.class,1,resp,req);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

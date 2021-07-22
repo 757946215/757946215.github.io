@@ -5,12 +5,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Archive: 2021/7</title>
+    <title>equals()和==之间的区别 - Core</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Fechin,"> 
-    
+    <meta name="description" content="在Java中，对于equals()方法和==两个之间的浅入了解大概就是“equals”是用来比对字符串的，而“==”是用来比对数值类型的。当然这只是表面理解。今天稍微深入了解并记录下两者之间的区别
+,"> 
     <meta name="author" content="John Doe"> 
     <link rel="alternative" href="atom.xml" title="Core" type="application/atom+xml"> 
     <link rel="icon" href="/img/Toplogo.png"> 
@@ -25,57 +26,87 @@
 <body class="loading">
     <span id="config-title" style="display:none">Core</span>
     <div id="loader"></div>
-    <div id="single" class="page">
-    <div id="top">
-        <a class="iconfont icon-left image-icon" href="javascript:history.back()"></a>
-    </div>
-    <div class="section">
-        <div class="article">
-            <div class="main">
-                <div class="content">
-                    <div class="timeline">
-                      <h2 class="timeline-title">归档: 5篇</h2><hr>
-                      
-                      
-                        
-                          <h3 class="timeline-subtitle">2021</h3>
-                        
-                        <div class="timeline-item">
-                          <time>2021-07-21</time>
-                          <a target="_self" href="/2021/07/21/ioc%E5%92%8Caop/">深入了解ioc与aop</a>
-                        </div>
-                      
-                        
-                        <div class="timeline-item">
-                          <time>2021-07-21</time>
-                          <a target="_self" href="/2021/07/21/poi%E5%AF%BC%E5%87%BA/">Java＋poi 实现导出excel文档</a>
-                        </div>
-                      
-                        
-                        <div class="timeline-item">
-                          <time>2021-07-21</time>
-                          <a target="_self" href="/2021/07/21/%E5%AE%B9%E5%99%A8/">java 容器都有哪些?</a>
-                        </div>
-                      
-                        
-                        <div class="timeline-item">
-                          <time>2021-07-20</time>
-                          <a target="_self" href="/2021/07/20/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%81%BF%E5%9D%91/">微信小程序解密报错-- IV not 16 bytes long</a>
-                        </div>
-                      
-                        
-                        <div class="timeline-item">
-                          <time>2021-07-19</time>
-                          <a target="_self" href="/2021/07/19/java%E5%9F%BA%E7%A1%80/">equals()和==之间的区别</a>
-                        </div>
-                      
-                    </div>
-                </div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">equals()和==之间的区别</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
             </div>
+            <div id="qr"></div>
         </div>
     </div>
+    <div class="scrollbar"></div>
 </div>
 
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">equals()和==之间的区别</h1>
+        <div class="stuff">
+            <span>七月 19, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/java/" rel="tag">java</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>在Java中，对于equals()方法和==两个之间的浅入了解大概就是“equals”是用来比对字符串的，而“==”是用来比对数值类型的。当然这只是表面理解。今天稍微深入了解并记录下两者之间的区别</p>
+<h2 id="1、功能不同"><a href="#1、功能不同" class="headerlink" title="1、功能不同"></a>1、功能不同</h2><blockquote>
+<p>“==”是判断两个变量或实例是不是指向同一个内存空间<br>“equals”是判断两个变量或实例所指向的内存空间的值是不是相同</p>
+</blockquote>
+<h2 id="2、定义不同"><a href="#2、定义不同" class="headerlink" title="2、定义不同"></a>2、定义不同</h2><blockquote>
+<p>“equals” 在Java中是一个方法<br>“==” 在Java中只是一个运算符号 </p>
+</blockquote>
+<h2 id="3、运行速度不同"><a href="#3、运行速度不同" class="headerlink" title="3、运行速度不同"></a>3、运行速度不同</h2><blockquote>
+<p>“==”比“equals”运行速度快，因为“==”只是比较引用”<br>“equals”比“==”运行速度要慢，因为他要比较内存空间的值</p>
+</blockquote>
+<h3 id="扩展资料"><a href="#扩展资料" class="headerlink" title="扩展资料"></a>扩展资料</h3><blockquote>
+<p>equals()方法特点：<br>1、自反性：x.equals（x）返回true；<br>2、对称性：若x.equals（y）为true，则y.equals（x）亦为true；<br>3、传递性：若x.equals（y）为true且y.equals（z）也为true，则x.equals（z）亦为true；<br>4、一致性：x.equals（y）的第一次调用为true，那么x.equals（y）的第二次、第三次、第n次调用也均为true，前提条件是没有修改x也没有修改y；<br>5、对于非空引用x，x.equals（null）永远返回为false。</p>
+</blockquote>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
